@@ -3,13 +3,15 @@ const mongoose = require('mongoose');
 const User = require('./models/user');
 const Asset = require('./models/asset');
 const AssetHistory = require('./models/assetHistory');
+const aclInstance = require('./middlewares/aclsetup');
+const checkRole = require('./middlewares/checkrole');
 
 const app = express();
 const port = 3000;
 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/asset_management');
-mongoose.connect('mongodb://localhost:27017/asset_management', { useNewUrlParser: true, useUnifiedTopology: true });
+
 // Event listener for successful MongoDB connection
 mongoose.connection.on('connected', () => {
   console.log('Connected to MongoDB');
@@ -50,12 +52,9 @@ app.get('/users', async (req, res) => {
 });
 
 // Route to register a new asset
-app.post('/assets', async (req, res) => {
+app.post('/assets', checkRole('client'), async (req, res) => {
   try {
-    // Extract asset data from the request body
     const { type, make, model, purchase_date, warranty_end_date, status, location, assigned_to } = req.body;
-
-    // Create a new asset instance using the extracted data
     const newAsset = new Asset({
       type,
       make,
@@ -66,14 +65,9 @@ app.post('/assets', async (req, res) => {
       location,
       assigned_to
     });
-
-    // Save the new asset to the database
     await newAsset.save();
-
-    // Send a 201 response with the newly created asset
     res.status(201).send(newAsset);
   } catch (error) {
-    // Handle any errors that occur during asset creation
     res.status(400).send(error);
   }
 });
