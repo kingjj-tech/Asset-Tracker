@@ -8,7 +8,7 @@ const app = express();
 const port = 3000;
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/asset_management', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb://localhost:27017/asset_management');
 
 // Event listener for successful MongoDB connection
 mongoose.connection.on('connected', () => {
