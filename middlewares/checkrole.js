@@ -1,4 +1,4 @@
-const aclInstance = require('./aclSetup');
+const aclInstance = require('./aclSetup'); // Correct relative path
 
 // Middleware to check roles
 const checkRole = (role) => {
