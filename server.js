@@ -8,10 +8,7 @@ const app = express();
 const port = 3000;
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/asset_management', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect('mongodb://localhost:27017/asset_management');
 
 // Event listener for successful MongoDB connection
 mongoose.connection.on('connected', () => {
@@ -52,7 +49,6 @@ app.get('/users', async (req, res) => {
   }
 });
 
-// Simplified route to register a new asset without checkRole middleware
 app.post('/assets', async (req, res) => {
   try {
     const { type, make, model, purchase_date, warranty_end_date, status, location, assigned_to } = req.body;
