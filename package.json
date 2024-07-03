@@ -1,9 +1,13 @@
 {
   "dependencies": {
+    "acl": "^0.4.11",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
     "mongod": "^2.0.0",
     "mongodb": "^6.8.0",
-    "mongoose": "^8.4.4",
+    "mongoose": "^5.13.8",
     "uuid": "^10.0.0"
   }
 }
