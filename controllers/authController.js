@@ -1,5 +1,3 @@
-// controllers/authController.js
-
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -13,10 +11,9 @@ const register = async (req, res) => {
       return res.status(400).send('User already exists');
     }
 
-    const hashedPassword = await bcrypt.hash(password, 8);
-    const newUser = new User({ name, email, department, role, password: hashedPassword });
+    const newUser = new User({ name, email, department, role, password });
 
-    const token = jwt.sign({ id: newUser._id, role: newUser.role }, 'your_secret_key', { expiresIn: '1h' });
+    const token = jwt.sign({ id: newUser._id, role: newUser.role }, 'password123', { expiresIn: '1h' });
     newUser.tokens = newUser.tokens.concat({ token });
     await newUser.save();
 
@@ -25,6 +22,7 @@ const register = async (req, res) => {
     res.status(500).send(error);
   }
 };
+
 
 const login = async (req, res) => {
   const { email, password } = req.body;
@@ -35,8 +33,7 @@ const login = async (req, res) => {
       return res.status(404).send('User not found');
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
+    if (password !== user.password) {
       return res.status(400).send('Invalid credentials');
     }
 
@@ -49,5 +46,6 @@ const login = async (req, res) => {
     res.status(500).send(error);
   }
 };
+
 
 module.exports = { register, login };
