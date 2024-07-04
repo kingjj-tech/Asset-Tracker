@@ -22,6 +22,9 @@ const Login = () => {
         localStorage.setItem('token', data.token);
         localStorage.setItem('role', data.user.role);
 
+        console.log('Token stored:', localStorage.getItem('token')); // Debugging log
+        console.log('Role stored:', localStorage.getItem('role')); // Debugging log
+
         if (data.user.role === 'superuser') {
           alert('Superuser login is not allowed.');
         } else {
@@ -32,7 +35,6 @@ const Login = () => {
       }
     } catch (error) {
       console.error('Error:', error);
-      alert('Login failed');
     }
   };
 
