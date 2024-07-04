@@ -12,6 +12,12 @@ const CreateAsset = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
+
+    if (!token) {
+      alert('No token found. Please login first.');
+      return;
+    }
+
     try {
       const response = await fetch('http://localhost:5000/assets', {
         method: 'POST',
@@ -38,6 +44,7 @@ const CreateAsset = () => {
       }
     } catch (error) {
       console.error('Error:', error);
+      alert('An error occurred while creating the asset. Please try again.');
     }
   };
 

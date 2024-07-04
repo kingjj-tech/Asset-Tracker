@@ -23,7 +23,6 @@ const register = async (req, res) => {
   }
 };
 
-
 const login = async (req, res) => {
   const { email, password } = req.body;
 
@@ -33,7 +32,8 @@ const login = async (req, res) => {
       return res.status(404).send('User not found');
     }
 
-    if (password !== user.password) {
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+    if (!isPasswordMatch) {
       return res.status(400).send('Invalid credentials');
     }
 
@@ -46,6 +46,5 @@ const login = async (req, res) => {
     res.status(500).send(error);
   }
 };
-
 
 module.exports = { register, login };
