@@ -1,12 +1,10 @@
+// server.js
 const express = require('express');
 const mongoose = require('mongoose');
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const assetRoutes = require('./routes/assetRoutes');
 const assetHistoryRoutes = require('./routes/assetHistoryRoutes');
-const auth = require('./middleware/auth');
-const checkRole = require('./middleware/checkRole');
-const aclInstance = require('./aclSetup');
 
 const app = express();
 const port = 3000;
