@@ -1,5 +1,64 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+
+const LoginContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #6e8efb, #a777e3);
+`;
+
+const LoginForm = styled.form`
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+`;
+
+const Title = styled.h1`
+  color: #333;
+  text-align: center;
+  margin-bottom: 2rem;
+`;
+
+const InputGroup = styled.div`
+  margin-bottom: 1rem;
+`;
+
+const Label = styled.label`
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #555;
+`;
+
+const Input = styled.input`
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+`;
+
+const Button = styled.button`
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #357abd;
+  }
+`;
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -22,9 +81,6 @@ const Login = () => {
         localStorage.setItem('token', data.token);
         localStorage.setItem('role', data.user.role);
 
-        console.log('Token stored:', localStorage.getItem('token')); // Debugging log
-        console.log('Role stored:', localStorage.getItem('role')); // Debugging log
-
         if (data.user.role === 'superuser') {
           alert('Superuser login is not allowed.');
         } else {
@@ -39,28 +95,32 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <h1>Login</h1>
-      <form onSubmit={handleLogin}>
-        <div>
-          <label>Email:</label>
-          <input
+    <LoginContainer>
+      <LoginForm onSubmit={handleLogin}>
+        <Title>Login</Title>
+        <InputGroup>
+          <Label htmlFor="email">Email:</Label>
+          <Input
+            id="email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input
+        </InputGroup>
+        <InputGroup>
+          <Label htmlFor="password">Password:</Label>
+          <Input
+            id="password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
-        </div>
-        <button type="submit">Login</button>
-      </form>
-    </div>
+        </InputGroup>
+        <Button type="submit">Login</Button>
+      </LoginForm>
+    </LoginContainer>
   );
 };
 

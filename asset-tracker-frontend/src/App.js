@@ -4,6 +4,7 @@ import Login from './components/login';
 import UserDashboard from './components/userDashboard';
 import SuperuserDashboard from './components/superUserDashboard';
 import CreateAsset from './components/createAsset';
+import UpdateAsset from './components/updateAsset';
 
 function App() {
   return (

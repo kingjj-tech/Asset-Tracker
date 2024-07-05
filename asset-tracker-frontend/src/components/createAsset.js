@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './CreateAsset.css';
 
 const CreateAsset = () => {
   const [type, setType] = useState('');
@@ -17,7 +18,7 @@ const CreateAsset = () => {
       return;
     }
     try {
-      const response = await fetch('http://localhost:5000/assets', {
+      const response = await fetch('http://localhost:3000/assets', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -46,66 +47,73 @@ const CreateAsset = () => {
   };
 
   return (
-    <div>
-      <h1>Create Asset</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Type:</label>
+    <div className="create-asset-container">
+      <h1 className="create-asset-title">Create Asset</h1>
+      <form onSubmit={handleSubmit} className="create-asset-form">
+        <div className="form-group">
+          <label htmlFor="type">Type:</label>
           <input
+            id="type"
             type="text"
             value={type}
             onChange={(e) => setType(e.target.value)}
           />
         </div>
-        <div>
-          <label>Make:</label>
+        <div className="form-group">
+          <label htmlFor="make">Make:</label>
           <input
+            id="make"
             type="text"
             value={make}
             onChange={(e) => setMake(e.target.value)}
           />
         </div>
-        <div>
-          <label>Model:</label>
+        <div className="form-group">
+          <label htmlFor="model">Model:</label>
           <input
+            id="model"
             type="text"
             value={model}
             onChange={(e) => setModel(e.target.value)}
           />
         </div>
-        <div>
-          <label>Purchase Date:</label>
+        <div className="form-group">
+          <label htmlFor="purchaseDate">Purchase Date:</label>
           <input
+            id="purchaseDate"
             type="date"
             value={purchaseDate}
             onChange={(e) => setPurchaseDate(e.target.value)}
           />
         </div>
-        <div>
-          <label>Warranty End Date:</label>
+        <div className="form-group">
+          <label htmlFor="warrantyEndDate">Warranty End Date:</label>
           <input
+            id="warrantyEndDate"
             type="date"
             value={warrantyEndDate}
             onChange={(e) => setWarrantyEndDate(e.target.value)}
           />
         </div>
-        <div>
-          <label>Status:</label>
-          <select value={status} onChange={(e) => setStatus(e.target.value)}>
+        <div className="form-group">
+          <label htmlFor="status">Status:</label>
+          <select id="status" value={status} onChange={(e) => setStatus(e.target.value)}>
+            <option value="">Select status</option>
             <option value="in use">In Use</option>
             <option value="in storage">In Storage</option>
             <option value="disposed">Disposed</option>
           </select>
         </div>
-        <div>
-          <label>Location:</label>
+        <div className="form-group">
+          <label htmlFor="location">Location:</label>
           <input
+            id="location"
             type="text"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
           />
         </div>
-        <button type="submit">Create</button>
+        <button type="submit" className="submit-button">Create</button>
       </form>
     </div>
   );
