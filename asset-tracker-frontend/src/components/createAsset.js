@@ -18,7 +18,7 @@ const CreateAsset = () => {
       return;
     }
     try {
-      const response = await fetch('http://127.0.0.1:27017/routes/assetRoutes', {
+      const response = await fetch('http://localhost:3000/assets', { // Updated URL
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

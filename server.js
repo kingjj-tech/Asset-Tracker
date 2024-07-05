@@ -10,7 +10,7 @@ const assetHistoryRoutes = require('./routes/assetHistoryRoutes');
 const app = express();
 const port = 3000;
 
-mongoose.connect('mongodb://127.0.0.1:27017/asset_management', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb://localhost:27017/asset_management', { useNewUrlParser: true, useUnifiedTopology: true });
 
 const db = mongoose.connection;
 
@@ -30,6 +30,11 @@ db.once('open', () => {
   app.get('/test-cors', (req, res) => {
     res.send('CORS is working!');
   });
+  app.use(cors({
+    origin: 'http://localhost:3000', // Your frontend URL
+    optionsSuccessStatus: 200
+  }));
+  
 
   app.get('/', (req, res) => {
     res.send('Asset Tracking and Management API');

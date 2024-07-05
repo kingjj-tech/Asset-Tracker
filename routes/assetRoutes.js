@@ -1,26 +1,33 @@
 const express = require('express');
-const Asset = require('../models/asset');
 const router = express.Router();
+const mongoose = require('mongoose');
+const Asset = require('../models/Asset');
 
-// Route to create a new asset
 router.post('/', async (req, res) => {
-    try {
-        const newAsset = new Asset(req.body);
-        await newAsset.save();
-        res.status(201).send(newAsset);
-    } catch (error) {
-        res.status(400).send(error);
-    }
-});
+  const { type, make, model, purchaseDate, warrantyEndDate, status, location } = req.body;
 
-// Route to get all assets
-router.get('/', async (req, res) => {
-    try {
-        const assets = await Asset.find();
-        res.status(200).send(assets);
-    } catch (error) {
-        res.status(500).send(error);
-    }
+  if (!type || !make || !model || !purchaseDate || !warrantyEndDate || !status || !location) {
+    return res.status(400).json({ error: 'All fields are required' });
+  }
+
+  try {
+    const asset = new Asset({
+      type,
+      make,
+      model,
+      purchaseDate,
+      warrantyEndDate,
+      status,
+      location,
+      asset_id: new mongoose.Types.ObjectId().toString()
+    });
+
+    await asset.save();
+    res.status(201).json({ message: 'Asset created successfully', asset });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to create asset' });
+  }
 });
 
 module.exports = router;
