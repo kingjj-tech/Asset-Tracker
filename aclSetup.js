@@ -2,7 +2,7 @@ const acl = require('acl');
 const mongoose = require('mongoose');
 
 // Initialize the MongoDB connection
-mongoose.connect('mongodb://localhost:27017/asset_management', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb:/127.0.0.1:27017/asset_management', { useNewUrlParser: true, useUnifiedTopology: true });
 
 const db = mongoose.connection;
 
