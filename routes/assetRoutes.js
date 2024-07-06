@@ -30,4 +30,45 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.put('/:id', async (req, res) => {
+  const { id } = req.params; // Extract the asset ID from the request parameters
+  const updateData = req.body; // Data to update the asset with
+
+  // Optional: Add validation for updateData here
+  // For example, check if updateData is empty
+  if (Object.keys(updateData).length === 0) {
+    return res.status(400).json({ error: 'Update data is empty' });
+  }
+
+  try {
+    const updatedAsset = await Asset.findByIdAndUpdate(id, updateData, { new: true, runValidators: true }); // Update the asset
+    if (!updatedAsset) {
+      return res.status(404).json({ error: 'Asset not found' }); // Asset not found
+    }
+    res.status(200).json(updatedAsset); // Send the updated asset with a 200 status code
+  } catch (error) {
+    console.error(error); // Log any errors
+    // Handle validation errors or other errors separately
+    if (error.name === 'ValidationError') {
+      res.status(400).json({ error: 'Validation error', details: error.message });
+    } else {
+      res.status(500).json({ error: 'Failed to update asset' }); // Return a 500 status code with an error message
+    }
+  }
+});
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params; // Extract the asset ID from the request parameters
+
+  try {
+    const deletedAsset = await Asset.findByIdAndDelete(id); // Attempt to delete the asset
+    if (!deletedAsset) {
+      return res.status(404).json({ error: 'Asset not found' }); // Asset not found
+    }
+    res.status(200).json({ message: 'Asset deleted successfully', deletedAsset }); // Send success response
+  } catch (error) {
+    console.error(error); // Log any errors
+    res.status(500).json({ error: 'Failed to delete asset' }); // Return a 500 status code with an error message
+  }
+});
+
 module.exports = router;
