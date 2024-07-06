@@ -3,7 +3,7 @@ const AssetHistory = require('../models/assetHistory');
 const router = express.Router();
 
 // Route to register a new asset history record
-router.post('/assetHistory', async (req, res) => {
+router.post('/', async (req, res) => {
     try {
         const newAssetHistory = new AssetHistory(req.body);
         await newAssetHistory.save();
@@ -14,7 +14,7 @@ router.post('/assetHistory', async (req, res) => {
 });
 
 // Route to get all asset history records
-router.get('/assetHistory', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const assetHistories = await AssetHistory.find();
         res.status(200).send(assetHistories);

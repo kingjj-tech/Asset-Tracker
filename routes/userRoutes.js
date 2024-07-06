@@ -23,4 +23,20 @@ router.get('/', async (req, res) => {
     }
 });
 
+// Route to remove a user by ID
+router.delete('/:id', async (req, res) => {
+    const { id } = req.params; // Extract the user ID from the request parameters
+
+    try {
+        const deletedUser = await User.findByIdAndDelete(id); // Attempt to delete the user
+        if (!deletedUser) {
+            return res.status(404).send({ error: 'User not found' }); // User not found
+        }
+        res.status(200).send({ message: 'User deleted successfully', deletedUser }); // Send success response
+    } catch (error) {
+        console.error(error); // Log any errors
+        res.status(500).send(error); // Return a 500 status code with an error message
+    }
+});
+
 module.exports = router;
