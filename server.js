@@ -3,11 +3,17 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors'); // Import cors
 const authRoutes = require('./routes/authRoutes');
+const http = require('http');
+const socketIo = require('socket.io');
 const userRoutes = require('./routes/userRoutes');
 const assetRoutes = require('./routes/assetRoutes');
 const assetHistoryRoutes = require('./routes/assetHistoryRoutes');
 
 const app = express();
+const server = http.createServer(app);
+const io = socketIo(server); 
+
+
 const port = 3000;
 
 mongoose.connect('mongodb://localhost:27017/asset_management', { useNewUrlParser: true, useUnifiedTopology: true });
@@ -34,13 +40,22 @@ db.once('open', () => {
     origin: 'http://localhost:3000', // Your frontend URL
     optionsSuccessStatus: 200
   }));
+
   
 
   app.get('/', (req, res) => {
     res.send('Asset Tracking and Management API');
   });
 
-  app.listen(port, () => {
+  server.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
   });
+  io.on('connection', (socket) => {
+    console.log('New client connected');
+    
+    socket.on('disconnect', () => {
+      console.log('Client disconnected');
+    });
+  });
+  app.set('socketio', io); // Add this line
 });
