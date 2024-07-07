@@ -23,6 +23,32 @@ router.get('/', async (req, res) => {
     }
 });
 
+// Route to get a user by ID
+router.get('/:id', async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        if (!user) {
+            return res.status(404).send({ error: 'User not found' });
+        }
+        res.status(200).send(user);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
+
+// Route to update a user by ID
+router.put('/:id', async (req, res) => {
+    try {
+        const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+        if (!user) {
+            return res.status(404).send({ error: 'User not found' });
+        }
+        res.status(200).send(user);
+    } catch (error) {
+        res.status(400).send(error);
+    }
+});
+
 // Route to remove a user by ID
 router.delete('/:id', async (req, res) => {
     const { id } = req.params; // Extract the user ID from the request parameters

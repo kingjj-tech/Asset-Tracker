@@ -5,7 +5,7 @@ const ViewAssets = () => {
   const [assets, setAssets] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/assets')
+    fetch('http://localhost:3000/assets')
       .then(response => response.json())
       .then(data => setAssets(data))
       .catch(error => console.error('Error fetching assets:', error));

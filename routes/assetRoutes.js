@@ -3,6 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const Asset = require('../models/Asset');
 
+// Create a new asset
 router.post('/', async (req, res) => {
   const { type, make, model, purchaseDate, warrantyEndDate, status, location } = req.body;
 
@@ -30,6 +31,7 @@ router.post('/', async (req, res) => {
   }
 });
 
+// Update an asset
 router.put('/:id', async (req, res) => {
   const { id } = req.params; // Extract the asset ID from the request parameters
   const updateData = req.body; // Data to update the asset with
@@ -56,6 +58,8 @@ router.put('/:id', async (req, res) => {
     }
   }
 });
+
+// Delete an asset
 router.delete('/:id', async (req, res) => {
   const { id } = req.params; // Extract the asset ID from the request parameters
 
@@ -68,6 +72,17 @@ router.delete('/:id', async (req, res) => {
   } catch (error) {
     console.error(error); // Log any errors
     res.status(500).json({ error: 'Failed to delete asset' }); // Return a 500 status code with an error message
+  }
+});
+
+// Get all assets
+router.get('/', async (req, res) => {
+  try {
+    const assets = await Asset.find();
+    res.status(200).json(assets);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to fetch assets' });
   }
 });
 

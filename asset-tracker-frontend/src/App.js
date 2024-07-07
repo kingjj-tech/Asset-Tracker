@@ -11,6 +11,9 @@ import ViewAssetHistory from './components/viewAssetHistory';
 import CreateUser from './components/createUser';
 import ViewUsers from './components/viewUsers';
 
+
+import UpdateUser from './components/updateUser';
+
 function App() {
   return (
     <Router>
@@ -25,6 +28,8 @@ function App() {
         <Route path="/view-asset-history" element={<ViewAssetHistory />} />
         <Route path="/create-user" element={<CreateUser />} />
         <Route path="/view-users" element={<ViewUsers />} />
+        <Route path="/update-user/:id" element={<UpdateUser />} />
+        
       </Routes>
     </Router>
   );
