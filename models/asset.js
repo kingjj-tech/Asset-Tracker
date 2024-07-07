@@ -12,6 +12,4 @@ const assetSchema = new mongoose.Schema({
   asset_id: { type: String, required: true },
 });
 
-const Asset = mongoose.model('Asset', assetSchema);
-
-module.exports = Asset;
+module.exports = mongoose.models.Asset || mongoose.model('Asset', assetSchema);
