@@ -1,4 +1,9 @@
 const User = require('../models/user');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+
+// Secret key for JWT
+const JWT_SECRET = 'your_jwt_secret';
 
 // Function to register a new user
 const register = async (req, res) => {
@@ -19,7 +24,10 @@ const register = async (req, res) => {
     const newUser = new User({ name, email, password, role, department });
     await newUser.save();
 
-    res.status(201).send(newUser);
+    // Generate a token
+    const token = jwt.sign({ userId: newUser._id, role: newUser.role }, JWT_SECRET, { expiresIn: '1h' });
+
+    res.status(201).send({ newUser, token });
   } catch (error) {
     res.status(400).send({ message: 'Error creating user', error });
   }
@@ -29,18 +37,24 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   const { email, password } = req.body;
 
+  if (!email || !password) {
+    return res.status(400).send({ message: 'Email and password are required' });
+  }
+
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(404).send('User not found');
+      return res.status(404).send({ message: 'User not found' });
     }
 
-    const isMatch = await user.comparePassword(password);
-    if (!isMatch) {
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+    if (!isPasswordMatch) {
       return res.status(400).send({ message: 'Invalid credentials' });
     }
 
-    const token = await user.generateAuthToken();
+    // Generate a token
+    const token = jwt.sign({ userId: user._id, role: user.role }, JWT_SECRET, { expiresIn: '1h' });
+
     res.send({ user, token });
   } catch (error) {
     res.status(500).send(error);
