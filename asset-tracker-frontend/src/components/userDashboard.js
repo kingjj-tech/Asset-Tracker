@@ -37,14 +37,14 @@ const UserDashboard = () => {
         <h1 className="dashboard-title">Inventory Management System</h1>
         <div className="user-info" onClick={() => handleNavigation('/profile')}>
           <img src="/avatar-placeholder.png" alt="User Avatar" className="user-avatar" />
-          <span className="user-name">John Doe</span>
+          <span className="user-name"></span>
         </div>
       </header>
       <nav className="dashboard-nav">
         <ul>
           <li><a href="#dashboard" className="active">Dashboard</a></li>
           <li><a href="#" onClick={() => handleNavigation('/reports')}>Reports</a></li>
-          <li><a href="#" onClick={() => handleNavigation('/settings')}>Settings</a></li>
+          <li><a href="#" onClick={() => handleNavigation('/settings')}></a></li>
         </ul>
       </nav>
       <main className="dashboard-content">

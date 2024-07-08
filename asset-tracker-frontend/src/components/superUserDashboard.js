@@ -2,147 +2,196 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-const PageContainer = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-family: Arial, sans-serif;
-  background-color: #f0f8ff;
+const DashboardContainer = styled.div`
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f2f5;
   min-height: 100vh;
 `;
 
-const HeaderContainer = styled.div`
+const Header = styled.header`
+  background-color: #0078d4;
+  color: white;
+  padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
-  background-color: #2c3e50;
-  padding: 1rem 2rem;
-  border-radius: 10px;
 `;
 
 const Title = styled.h1`
-  color: #ecf0f1;
-  font-size: 2.5rem;
+  margin: 0;
+  font-size: 1.5rem;
 `;
 
-const CreateButton = styled.button`
-  background-color: #e74c3c;
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1.1rem;
-  transition: background-color 0.3s;
-  &:hover {
-    background-color: #c0392b;
-  }
-`;
-
-const StatContainer = styled.div`
+const UserInfo = styled.div`
   display: flex;
-  justify-content: space-around;
-  margin-bottom: 2rem;
+  align-items: center;
+  cursor: pointer;
 `;
 
-const StatBox = styled.div`
-  padding: 1.5rem;
-  background-color: #3498db;
-  border-radius: 10px;
-  text-align: center;
-  width: 200px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s;
-  &:hover {
-    transform: translateY(-5px);
-  }
+const UserAvatar = styled.img`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
 `;
 
-const StatNumber = styled.div`
-  font-size: 2.5rem;
-  color: #ecf0f1;
+const UserName = styled.span`
   font-weight: bold;
 `;
 
-const StatLabel = styled.div`
-  font-size: 1.2rem;
-  color: #ecf0f1;
-  margin-top: 0.5rem;
+const Nav = styled.nav`
+  background-color: #f3f2f1;
+  padding: 0.5rem 2rem;
 `;
 
-const SearchContainer = styled.div`
+const NavList = styled.ul`
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+`;
+
+const NavItem = styled.li`
+  margin-right: 1rem;
+`;
+
+const NavLink = styled.a`
+  text-decoration: none;
+  color: #333;
+  padding: 0.5rem 1rem;
+  &:hover, &.active {
+    background-color: #e1dfdd;
+    border-radius: 4px;
+  }
+`;
+
+const Content = styled.main`
+  padding: 2rem;
+`;
+
+const QuickActions = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
   margin-bottom: 2rem;
-`;
-
-const SearchInput = styled.input`
-  width: 100%;
-  padding: 1rem;
-  font-size: 1.1rem;
-  border: 2px solid #3498db;
-  border-radius: 5px;
-  &:focus {
-    outline: none;
-    border-color: #2980b9;
-  }
-`;
-
-const Table = styled.table`
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0 10px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-`;
-
-const Th = styled.th`
-  background-color: #34495e;
-  color: white;
-  padding: 1.5rem;
-  text-align: left;
-  font-size: 1.1rem;
-`;
-
-const Td = styled.td`
-  padding: 1.5rem;
-  background-color: white;
-  &:first-child {
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-  }
-  &:last-child {
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-  }
-`;
-
-const Tr = styled.tr`
-  transition: transform 0.3s;
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
 `;
 
 const ActionLink = styled(Link)`
   text-decoration: none;
-  color: #3498db;
-  margin-right: 1rem;
-  font-weight: bold;
-  transition: color 0.3s;
+  color: #333;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
   &:hover {
-    color: #2980b9;
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+`;
+
+const ActionIcon = styled.i`
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+`;
+
+const Widgets = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+`;
+
+const Widget = styled.div`
+  background-color: white;
+  padding: 1rem;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+`;
+
+const WidgetTitle = styled.h3`
+  margin-top: 0;
+  border-bottom: 1px solid #e1dfdd;
+  padding-bottom: 0.5rem;
+`;
+
+const UserManagementWidget = styled(Widget)`
+  overflow: hidden;
+`;
+
+const UserTable = styled.table`
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+`;
+
+const UserTh = styled.th`
+  background-color: #f3f2f1;
+  color: #333;
+  font-weight: 600;
+  text-align: left;
+  padding: 12px 16px;
+  border-bottom: 2px solid #e1dfdd;
+`;
+
+const UserTd = styled.td`
+  padding: 12px 16px;
+  border-bottom: 1px solid #e1dfdd;
+`;
+
+const UserTr = styled.tr`
+  &:hover {
+    background-color: #f9f9f9;
   }
 `;
 
 const ActionButton = styled.button`
-  background: none;
+  background-color: transparent;
   border: none;
-  color: #e74c3c;
+  color: #0078d4;
   cursor: pointer;
-  font-weight: bold;
-  transition: color 0.3s;
+  font-size: 14px;
+  margin-right: 8px;
+  padding: 4px 8px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+
   &:hover {
-    color: #c0392b;
+    background-color: #f0f0f0;
+    border-radius: 2px;
+  }
+`;
+
+const ButtonIcon = styled.span`
+  margin-right: 4px;
+`;
+
+const SearchContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+`;
+
+const SearchIcon = styled.i`
+  color: #666;
+  margin-right: 8px;
+`;
+
+const SearchInput = styled.input`
+  flex-grow: 1;
+  padding: 8px 12px;
+  border: 1px solid #e1dfdd;
+  border-radius: 2px;
+  font-size: 14px;
+
+  &:focus {
+    outline: none;
+    border-color: #0078d4;
   }
 `;
 
@@ -184,7 +233,7 @@ const SuperuserDashboard = () => {
       });
       if (response.ok) {
         setUsers(users.filter(user => user._id !== id));
-        fetchCounts(); // Refresh counts after deletion
+        fetchCounts();
       } else {
         console.error('Error deleting user');
       }
@@ -200,53 +249,85 @@ const SuperuserDashboard = () => {
   );
 
   return (
-    <PageContainer>
-      <HeaderContainer>
+    <DashboardContainer>
+      <Header>
         <Title>Superuser Dashboard</Title>
-        <CreateButton onClick={() => navigate('/create-user')}>Create User</CreateButton>
-      </HeaderContainer>
-      <StatContainer>
-        <StatBox>
-          <StatNumber>{counts.userCount}</StatNumber>
-          <StatLabel>Total Users</StatLabel>
-        </StatBox>
-        <StatBox>
-          <StatNumber>{counts.itemCount}</StatNumber>
-          <StatLabel>Total Items</StatLabel>
-        </StatBox>
-      </StatContainer>
-      <SearchContainer>
-        <SearchInput 
-          type="text" 
-          placeholder="Search users by name, email, or role..." 
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-      </SearchContainer>
-      <Table>
-        <thead>
-          <Tr>
-            <Th>Name</Th>
-            <Th>Email</Th>
-            <Th>Role</Th>
-            <Th>Actions</Th>
-          </Tr>
-        </thead>
-        <tbody>
-          {filteredUsers.map(user => (
-            <Tr key={user._id}>
-              <Td>{user.name}</Td>
-              <Td>{user.email}</Td>
-              <Td>{user.role}</Td>
-              <Td>
-                <ActionLink to={`/update-user/${user._id}`}>Edit</ActionLink>
-                <ActionButton onClick={() => handleDelete(user._id)}>Delete</ActionButton>
-              </Td>
-            </Tr>
-          ))}
-        </tbody>
-      </Table>
-    </PageContainer>
+        <UserInfo onClick={() => navigate('/profile')}>
+          <UserAvatar src="/avatar-placeholder.png" alt="User Avatar" />
+          <UserName>....</UserName>
+        </UserInfo>
+      </Header>
+      <Nav>
+        <NavList>
+          <NavItem><NavLink href="#dashboard" className="active">Dashboard</NavLink></NavItem>
+          <NavItem><NavLink href="#" onClick={() => navigate('/reports')}>Reports</NavLink></NavItem>
+          <NavItem><NavLink href="#" onClick={() => navigate('/settings')}></NavLink></NavItem>
+        </NavList>
+      </Nav>
+      <Content>
+        <h2>Quick Actions</h2>
+        <QuickActions>
+          <ActionLink to="/create-user">
+            <ActionIcon className="fas fa-user-plus"></ActionIcon>
+            <span>Create User</span>
+          </ActionLink>
+          <ActionLink to="/view-users">
+            <ActionIcon className="fas fa-users"></ActionIcon>
+            <span>View Users</span>
+          </ActionLink>
+          <ActionLink to="/generate-report">
+            <ActionIcon className="fas fa-file-alt"></ActionIcon>
+            <span>Generate Report</span>
+          </ActionLink>
+        </QuickActions>
+        <Widgets>
+          <Widget>
+            <WidgetTitle>User Overview</WidgetTitle>
+            <p>Total Users: {counts.userCount}</p>
+            <p>Total Items: {counts.itemCount}</p>
+          </Widget>
+          <UserManagementWidget>
+            <WidgetTitle>User Management</WidgetTitle>
+            <SearchContainer>
+              <SearchIcon className="fas fa-search" />
+              <SearchInput 
+                type="text" 
+                placeholder="Search users by name, email, or role..." 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </SearchContainer>
+            <UserTable>
+              <thead>
+                <tr>
+                  <UserTh>Name</UserTh>
+                  <UserTh>Email</UserTh>
+                  <UserTh>Role</UserTh>
+                  <UserTh>Actions</UserTh>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredUsers.map(user => (
+                  <UserTr key={user._id}>
+                    <UserTd>{user.name}</UserTd>
+                    <UserTd>{user.email}</UserTd>
+                    <UserTd>{user.role}</UserTd>
+                    <UserTd>
+                      <ActionButton as={Link} to={`/update-user/${user._id}`}>
+                        <ButtonIcon>✏️</ButtonIcon> Edit
+                      </ActionButton>
+                      <ActionButton onClick={() => handleDelete(user._id)}>
+                        <ButtonIcon>🗑️</ButtonIcon> Delete
+                      </ActionButton>
+                    </UserTd>
+                  </UserTr>
+                ))}
+              </tbody>
+            </UserTable>
+          </UserManagementWidget>
+        </Widgets>
+      </Content>
+    </DashboardContainer>
   );
 };
 

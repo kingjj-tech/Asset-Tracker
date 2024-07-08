@@ -1,7 +1,7 @@
 const User = require('../models/user');
 
-// Function to register a new user
-const register = async (req, res) => {
+// Function to create a new user (only accessible by superusers)
+const createUser = async (req, res) => {
   const { name, email, password, role, department } = req.body;
 
   if (!name || !email || !password || !role || !department) {
@@ -25,26 +25,14 @@ const register = async (req, res) => {
   }
 };
 
-// Function to login a user
-const login = async (req, res) => {
-  const { email, password } = req.body;
-
+// Function to get all users (only accessible by superusers)
+const getAllUsers = async (req, res) => {
   try {
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(404).send('User not found');
-    }
-
-    const isMatch = await user.comparePassword(password);
-    if (!isMatch) {
-      return res.status(400).send({ message: 'Invalid credentials' });
-    }
-
-    const token = await user.generateAuthToken();
-    res.send({ user, token });
+    const users = await User.find({});
+    res.status(200).send(users);
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).send({ message: 'Error fetching users', error });
   }
 };
 
-module.exports = { register, login };
+module.exports = { createUser, getAllUsers };

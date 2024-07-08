@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './components/login';
+import Register from './components/register';
 import UserDashboard from './components/userDashboard';
 import SuperUserDashboard from './components/superUserDashboard';
 import CreateAsset from './components/createAsset';
@@ -19,6 +20,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
+         <Route path="/register" element={<Register />} />
         <Route path="/user-dashboard" element={<UserDashboard />} />
         <Route path="/superuser-dashboard" element={<SuperUserDashboard />} />
         <Route path="/create-asset" element={<CreateAsset />} />

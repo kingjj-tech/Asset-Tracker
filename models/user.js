@@ -1,7 +1,7 @@
-
 const mongoose = require('mongoose');
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const userSchema = new mongoose.Schema({
   user_id: { type: String, default: uuidv4, unique: true },
@@ -21,6 +21,21 @@ userSchema.pre('save', async function (next) {
   }
   next();
 });
+
+// Method to generate auth token
+userSchema.methods.generateAuthToken = async function () {
+  const user = this;
+  const token = jwt.sign({ _id: user._id.toString() }, 'secretkey'); // Use a more secure secret key in production
+  user.tokens = user.tokens.concat({ token });
+  await user.save();
+  return token;
+};
+
+// Method to compare passwords
+userSchema.methods.comparePassword = async function (password) {
+  const user = this;
+  return bcrypt.compare(password, user.password);
+};
 
 const User = mongoose.model('User', userSchema);
 

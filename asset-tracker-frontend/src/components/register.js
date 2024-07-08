@@ -39,14 +39,14 @@ const NavLink = styled(Link)`
   }
 `;
 
-const LoginContainer = styled.div`
+const RegisterContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   height: calc(100vh - 70px);
 `;
 
-const LoginForm = styled.form`
+const RegisterForm = styled.form`
   background: white;
   padding: 2rem;
   border-radius: 8px;
@@ -98,63 +98,31 @@ const Button = styled.button`
   }
 `;
 
-const UserTypeSelector = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-bottom: 1rem;
-`;
-
-const UserTypeButton = styled.button`
-  padding: 0.5rem 1rem;
-  background-color: ${props => props.active ? '#3498db' : '#f0f8ff'};
-  color: ${props => props.active ? 'white' : '#34495e'};
-  border: 1px solid #3498db;
-  cursor: pointer;
-  transition: all 0.3s ease;
-
-  &:first-child {
-    border-radius: 4px 0 0 4px;
-  }
-
-  &:last-child {
-    border-radius: 0 4px 4px 0;
-  }
-
-  &:hover {
-    background-color: #2980b9;
-    color: white;
-  }
-`;
-
-const Login = () => {
+const Register = () => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [userType, setUserType] = useState('user');
+  const [department, setDepartment] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3000/auth/login', {
+      const response = await fetch('http://localhost:3000/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password, role: userType }),
+        body: JSON.stringify({ name, email, password, role: 'user', department }),
       });
 
       const data = await response.json();
       if (response.ok) {
         localStorage.setItem('token', data.token);
-        localStorage.setItem('role', data.user.role);
-
-        if (userType === 'superuser') {
-          navigate('/superuser-dashboard');
-        } else {
-          navigate('/user-dashboard');
-        }
+        localStorage.setItem('role', data.newUser.role);
+        navigate('/user-dashboard');
       } else {
-        alert(data.message || 'Login failed');
+        alert(data.message || 'Registration failed');
       }
     } catch (error) {
       console.error('Error:', error);
@@ -170,48 +138,50 @@ const Login = () => {
           <NavLink to="/register">Register</NavLink>
         </NavLinks>
       </NavBar>
-      <LoginContainer>
-        <LoginForm onSubmit={handleLogin}>
-          <Title>Login</Title>
-          <UserTypeSelector>
-            <UserTypeButton 
-              type="button"
-              active={userType === 'user'} 
-              onClick={() => setUserType('user')}
-            >
-              User
-            </UserTypeButton>
-            <UserTypeButton 
-              type="button"
-              active={userType === 'superuser'} 
-              onClick={() => setUserType('superuser')}
-            >
-              Superuser
-            </UserTypeButton>
-          </UserTypeSelector>
+      <RegisterContainer>
+        <RegisterForm onSubmit={handleRegister}>
+          <Title>Register</Title>
           <InputGroup>
-            <Label>Email</Label>
+            <Label htmlFor="name">Name:</Label>
+            <Input
+              type="text"
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </InputGroup>
+          <InputGroup>
+            <Label htmlFor="email">Email:</Label>
             <Input
               type="email"
+              id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
             />
           </InputGroup>
           <InputGroup>
-            <Label>Password</Label>
+            <Label htmlFor="password">Password:</Label>
             <Input
               type="password"
+              id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
             />
           </InputGroup>
-          <Button type="submit">Login</Button>
-        </LoginForm>
-      </LoginContainer>
+          <InputGroup>
+            <Label htmlFor="department">Department:</Label>
+            <Input
+              type="text"
+              id="department"
+              value={department}
+              onChange={(e) => setDepartment(e.target.value)}
+            />
+          </InputGroup>
+          <Button type="submit">Register</Button>
+        </RegisterForm>
+      </RegisterContainer>
     </PageContainer>
   );
 };
 
-export default Login;
+export default Register;
