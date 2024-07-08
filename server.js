@@ -9,7 +9,6 @@ const assetRoutes = require('./routes/assetRoutes');
 const assetHistoryRoutes = require('./routes/assetHistoryRoutes');
 const statsRoute = require('./routes/statsRoutes');
 
-
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);

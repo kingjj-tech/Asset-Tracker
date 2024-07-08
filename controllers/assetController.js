@@ -50,5 +50,5 @@ exports.deleteAsset = async (req, res) => {
     res.send(asset);
   } catch (error) {
     res.status(500).send(error);
-  }
+  }
 };

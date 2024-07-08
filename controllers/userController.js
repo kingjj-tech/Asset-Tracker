@@ -1,22 +1,39 @@
 const User = require('../models/user');
-
-
+const bcrypt = require('bcryptjs');
+const { v4: uuidv4 } = require('uuid');
 
 exports.registerUser = async (req, res) => {
+  const { name, email, department, role, password } = req.body;
+
+  if (!name || !email || !department || !role || !password) {
+    return res.status(400).json({ error: 'All fields are required' });
+  }
+
   try {
-    const newUser = new User(req.body);
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({
+      name,
+      email,
+      department,
+      role,
+      password: hashedPassword,
+      user_id: uuidv4(),
+    });
+
     await newUser.save();
-    res.status(201).send(newUser);
+    res.status(201).json({ message: 'User created successfully', newUser });
   } catch (error) {
-    res.status(400).send(error);
+    console.error(error);
+    res.status(500).json({ error: 'Failed to create user' });
   }
 };
 
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.find();
-    res.status(200).send(users);
+    res.status(200).json(users);
   } catch (error) {
-    res.status(500).send(error);
+    console.error(error);
+    res.status(500).json({ error: 'Failed to fetch users' });
   }
 };

@@ -9,11 +9,41 @@ const PageContainer = styled.div`
   font-family: Arial, sans-serif;
 `;
 
+const HeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+`;
+
 const Title = styled.h2`
   color: #2c3e50;
   font-size: 2rem;
+`;
+
+const CreateButton = styled.button`
+  background-color: #3498db;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  &:hover {
+    background-color: #2980b9;
+  }
+`;
+
+const SearchContainer = styled.div`
   margin-bottom: 1.5rem;
-  text-align: center;
+`;
+
+const SearchInput = styled.input`
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 `;
 
 const Table = styled.table`
@@ -55,6 +85,7 @@ const ActionLink = styled(Link)`
 
 const ViewUsers = () => {
   const [users, setUsers] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -79,9 +110,26 @@ const ViewUsers = () => {
     }
   };
 
+  const filteredUsers = users.filter(user => 
+    user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.role.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <PageContainer>
-      <Title>Registered Users</Title>
+      <HeaderContainer>
+        <Title>Registered Users</Title>
+        <CreateButton onClick={() => navigate('/create-user')}>Create User</CreateButton>
+      </HeaderContainer>
+      <SearchContainer>
+        <SearchInput 
+          type="text" 
+          placeholder="Search users..." 
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </SearchContainer>
       <Table>
         <thead>
           <Tr>
@@ -92,7 +140,7 @@ const ViewUsers = () => {
           </Tr>
         </thead>
         <tbody>
-          {users.map(user => (
+          {filteredUsers.map(user => (
             <Tr key={user._id}>
               <Td>{user.name}</Td>
               <Td>{user.email}</Td>

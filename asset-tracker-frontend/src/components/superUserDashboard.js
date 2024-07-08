@@ -1,156 +1,253 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
-const DashboardContainer = styled.div`
-  padding: 20px;
+const PageContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto;
-  background: #f8f9fa;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  font-family: Arial, sans-serif;
+  background-color: #f0f8ff;
+  min-height: 100vh;
 `;
 
-const Header = styled.h1`
-  text-align: center;
-  margin-bottom: 20px;
-`;
-
-const LinkContainer = styled.div`
+const HeaderContainer = styled.div`
   display: flex;
-  justify-content: space-around;
-  margin-bottom: 20px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  background-color: #2c3e50;
+  padding: 1rem 2rem;
+  border-radius: 10px;
 `;
 
-const StyledLink = styled(Link)`
-  padding: 10px 20px;
-  background: #007bff;
-  color: #fff;
-  text-decoration: none;
-  border-radius: 4px;
+const Title = styled.h1`
+  color: #ecf0f1;
+  font-size: 2.5rem;
+`;
+
+const CreateButton = styled.button`
+  background-color: #e74c3c;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: background-color 0.3s;
   &:hover {
-    background: #0056b3;
+    background-color: #c0392b;
   }
 `;
 
-const StatsContainer = styled.div`
+const StatContainer = styled.div`
   display: flex;
   justify-content: space-around;
-  margin-top: 20px;
+  margin-bottom: 2rem;
 `;
 
 const StatBox = styled.div`
-  background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 45%;
+  padding: 1.5rem;
+  background-color: #3498db;
+  border-radius: 10px;
   text-align: center;
+  width: 200px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+  &:hover {
+    transform: translateY(-5px);
+  }
 `;
 
 const StatNumber = styled.div`
-  font-size: 2em;
-  margin-bottom: 10px;
-  color: #343a40;
+  font-size: 2.5rem;
+  color: #ecf0f1;
+  font-weight: bold;
 `;
 
 const StatLabel = styled.div`
-  font-size: 1.2em;
-  color: #6c757d;
+  font-size: 1.2rem;
+  color: #ecf0f1;
+  margin-top: 0.5rem;
 `;
 
-const ChartContainer = styled.div`
-  margin: 40px 0;
+const SearchContainer = styled.div`
+  margin-bottom: 2rem;
 `;
 
-const ActivityContainer = styled.div`
-  margin-top: 40px;
+const SearchInput = styled.input`
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.1rem;
+  border: 2px solid #3498db;
+  border-radius: 5px;
+  &:focus {
+    outline: none;
+    border-color: #2980b9;
+  }
 `;
 
-const ActivityHeader = styled.h2`
-  margin-bottom: 20px;
+const Table = styled.table`
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 `;
 
-const ActivityList = styled.ul`
-  list-style: none;
-  padding: 0;
+const Th = styled.th`
+  background-color: #34495e;
+  color: white;
+  padding: 1.5rem;
+  text-align: left;
+  font-size: 1.1rem;
 `;
 
-const ActivityItem = styled.li`
-  background: #fff;
-  padding: 10px 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin-bottom: 10px;
+const Td = styled.td`
+  padding: 1.5rem;
+  background-color: white;
+  &:first-child {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }
+  &:last-child {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
 `;
 
-const SuperUserDashboard = () => {
-  const [userCount, setUserCount] = useState(0);
-  const [itemCount, setItemCount] = useState(0);
-  const [historicalData, setHistoricalData] = useState([]);
-  const [recentActivities, setRecentActivities] = useState([]);
+const Tr = styled.tr`
+  transition: transform 0.3s;
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+`;
+
+const ActionLink = styled(Link)`
+  text-decoration: none;
+  color: #3498db;
+  margin-right: 1rem;
+  font-weight: bold;
+  transition: color 0.3s;
+  &:hover {
+    color: #2980b9;
+  }
+`;
+
+const ActionButton = styled.button`
+  background: none;
+  border: none;
+  color: #e74c3c;
+  cursor: pointer;
+  font-weight: bold;
+  transition: color 0.3s;
+  &:hover {
+    color: #c0392b;
+  }
+`;
+
+const SuperuserDashboard = () => {
+  const [counts, setCounts] = useState({ userCount: 0, itemCount: 0 });
+  const [users, setUsers] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('http://localhost:3000/stats/counts')
-      .then(response => response.json())
-      .then(data => {
-        setUserCount(data.userCount);
-        setItemCount(data.itemCount);
-      })
-      .catch(error => console.error('Error fetching counts:', error));
-
-    fetch('http://localhost:3000/stats/historical-data')
-      .then(response => response.json())
-      .then(data => setHistoricalData(data))
-      .catch(error => console.error('Error fetching historical data:', error));
-
-    fetch('http://localhost:3000/stats/recent-activities')
-      .then(response => response.json())
-      .then(data => setRecentActivities(data))
-      .catch(error => console.error('Error fetching recent activities:', error));
+    fetchCounts();
+    fetchUsers();
   }, []);
 
+  const fetchCounts = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/stats/counts');
+      const data = await response.json();
+      setCounts(data);
+    } catch (error) {
+      console.error('Error fetching counts:', error);
+    }
+  };
+
+  const fetchUsers = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/users');
+      const data = await response.json();
+      setUsers(data);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  };
+
+  const handleDelete = async id => {
+    try {
+      const response = await fetch(`http://localhost:3000/users/${id}`, {
+        method: 'DELETE',
+      });
+      if (response.ok) {
+        setUsers(users.filter(user => user._id !== id));
+        fetchCounts(); // Refresh counts after deletion
+      } else {
+        console.error('Error deleting user');
+      }
+    } catch (error) {
+      console.error('Error deleting user:', error);
+    }
+  };
+
+  const filteredUsers = users.filter(user => 
+    user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.role.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
-    <DashboardContainer>
-      <Header>Superuser Dashboard</Header>
-      <LinkContainer>
-        <StyledLink to="/create-user">Create User</StyledLink>
-        <StyledLink to="/view-users">View Users</StyledLink>
-        <StyledLink to="/user-dashboard">User Dashboard</StyledLink>
-      </LinkContainer>
-      <StatsContainer>
+    <PageContainer>
+      <HeaderContainer>
+        <Title>Superuser Dashboard</Title>
+        <CreateButton onClick={() => navigate('/create-user')}>Create User</CreateButton>
+      </HeaderContainer>
+      <StatContainer>
         <StatBox>
-          <StatNumber>{userCount}</StatNumber>
-          <StatLabel>Users</StatLabel>
+          <StatNumber>{counts.userCount}</StatNumber>
+          <StatLabel>Total Users</StatLabel>
         </StatBox>
         <StatBox>
-          <StatNumber>{itemCount}</StatNumber>
-          <StatLabel>Items</StatLabel>
+          <StatNumber>{counts.itemCount}</StatNumber>
+          <StatLabel>Total Items</StatLabel>
         </StatBox>
-      </StatsContainer>
-      <ChartContainer>
-        <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={historicalData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-            <Line type="monotone" dataKey="users" stroke="#8884d8" />
-            <Line type="monotone" dataKey="items" stroke="#82ca9d" />
-            <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-            <XAxis dataKey="date" />
-            <YAxis />
-            <Tooltip />
-          </LineChart>
-        </ResponsiveContainer>
-      </ChartContainer>
-      <ActivityContainer>
-        <ActivityHeader>Recent Activities</ActivityHeader>
-        <ActivityList>
-          {recentActivities.map((activity, index) => (
-            <ActivityItem key={index}>{activity.description}</ActivityItem>
+      </StatContainer>
+      <SearchContainer>
+        <SearchInput 
+          type="text" 
+          placeholder="Search users by name, email, or role..." 
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </SearchContainer>
+      <Table>
+        <thead>
+          <Tr>
+            <Th>Name</Th>
+            <Th>Email</Th>
+            <Th>Role</Th>
+            <Th>Actions</Th>
+          </Tr>
+        </thead>
+        <tbody>
+          {filteredUsers.map(user => (
+            <Tr key={user._id}>
+              <Td>{user.name}</Td>
+              <Td>{user.email}</Td>
+              <Td>{user.role}</Td>
+              <Td>
+                <ActionLink to={`/update-user/${user._id}`}>Edit</ActionLink>
+                <ActionButton onClick={() => handleDelete(user._id)}>Delete</ActionButton>
+              </Td>
+            </Tr>
           ))}
-        </ActivityList>
-      </ActivityContainer>
-    </DashboardContainer>
+        </tbody>
+      </Table>
+    </PageContainer>
   );
 };
 
-export default SuperUserDashboard;
+export default SuperuserDashboard;
