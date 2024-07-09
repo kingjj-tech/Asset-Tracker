@@ -3,6 +3,8 @@ const router = express.Router();
 
 const User = require('../models/user'); // Ensure this path is correct
 const Activity = require('../models/activity'); // Ensure this path is correct
+const Asset = require('../models/asset'); // Ensure this path is correct
+const HistoricalData = require('../models/historicalData'); // Ensure this path is correct
 
 // Endpoint to get user and item counts
 router.get('/counts', async (req, res) => {
