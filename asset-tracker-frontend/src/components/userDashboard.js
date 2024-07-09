@@ -56,6 +56,18 @@ const UserDashboard = () => {
               <span>Create Asset</span>
             </div>
           </Link>
+          <Link to="/update-asset" className="dashboard-link">
+            <div className="dashboard-item">
+              <i className="fas fa-edit"></i>
+              <span>Update Asset</span>
+            </div>
+          </Link>
+          <Link to="/delete-asset" className="dashboard-link">
+            <div className="dashboard-item">
+              <i className="fas fa-trash-alt"></i>
+              <span>Delete Asset</span>
+            </div>
+          </Link>
           <Link to="/view-assets" className="dashboard-link">
             <div className="dashboard-item">
               <i className="fas fa-list"></i>
