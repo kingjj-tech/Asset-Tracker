@@ -49,8 +49,13 @@ const ViewAssetHistory = () => {
   const [assetHistories, setAssetHistories] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:3000/assetHistories')
-      .then(response => response.json())
+    fetch('/assetHistory')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
       .then(data => setAssetHistories(data))
       .catch(error => console.error('Error fetching asset histories:', error));
   }, []);
@@ -70,7 +75,7 @@ const ViewAssetHistory = () => {
         </TableHead>
         <tbody>
           {assetHistories.map(history => (
-            <TableRow key={history._id}>
+            <TableRow key={history.history_id}>
               <TableCell>{history.asset_id}</TableCell>
               <TableCell>{history.user_id}</TableCell>
               <TableCell>{new Date(history.assigned_date).toLocaleDateString()}</TableCell>
