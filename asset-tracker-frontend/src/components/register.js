@@ -98,40 +98,11 @@ const Button = styled.button`
   }
 `;
 
-const UserTypeSelector = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-bottom: 1rem;
-`;
-
-const UserTypeButton = styled.button`
-  padding: 0.5rem 1rem;
-  background-color: ${props => props.active ? '#3498db' : '#f0f8ff'};
-  color: ${props => props.active ? 'white' : '#34495e'};
-  border: 1px solid #3498db;
-  cursor: pointer;
-  transition: all 0.3s ease;
-
-  &:first-child {
-    border-radius: 4px 0 0 4px;
-  }
-
-  &:last-child {
-    border-radius: 0 4px 4px 0;
-  }
-
-  &:hover {
-    background-color: #2980b9;
-    color: white;
-  }
-`;
-
 const Register = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [department, setDepartment] = useState('');
-  const [userType, setUserType] = useState('user');
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
@@ -142,19 +113,14 @@ const Register = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, email, password, role: userType, department }),
+        body: JSON.stringify({ name, email, password, role: 'user', department }),
       });
 
       const data = await response.json();
       if (response.ok) {
         localStorage.setItem('token', data.token);
         localStorage.setItem('role', data.newUser.role);
-
-        if (userType === 'superuser') {
-          navigate('/superuser-dashboard');
-        } else {
-          navigate('/user-dashboard');
-        }
+        navigate('/user-dashboard');
       } else {
         alert(data.message || 'Registration failed');
       }
@@ -175,22 +141,6 @@ const Register = () => {
       <RegisterContainer>
         <RegisterForm onSubmit={handleRegister}>
           <Title>Register</Title>
-          <UserTypeSelector>
-            <UserTypeButton 
-              type="button"
-              active={userType === 'user'} 
-              onClick={() => setUserType('user')}
-            >
-              User
-            </UserTypeButton>
-            <UserTypeButton 
-              type="button"
-              active={userType === 'superuser'} 
-              onClick={() => setUserType('superuser')}
-            >
-              Superuser
-            </UserTypeButton>
-          </UserTypeSelector>
           <InputGroup>
             <Label htmlFor="name">Name:</Label>
             <Input

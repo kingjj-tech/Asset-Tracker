@@ -49,14 +49,22 @@ const ViewAssetHistory = () => {
   const [assetHistories, setAssetHistories] = useState([]);
 
   useEffect(() => {
-    fetch('/assetHistory')
+    console.log('Fetching asset history');
+    fetch('/assetHistory', {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    })
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         return response.json();
       })
-      .then(data => setAssetHistories(data))
+      .then(data => {
+        console.log('Asset history data:', data);
+        setAssetHistories(data);
+      })
       .catch(error => console.error('Error fetching asset histories:', error));
   }, []);
 
