@@ -1,7 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+<<<<<<< HEAD
 const Asset = require('../models/asset');
+=======
+const Asset = require('../models/Asset');
+>>>>>>> parent of 69b219c (FIXED JWT)
 
 // Create a new asset
 router.post('/', async (req, res) => {
