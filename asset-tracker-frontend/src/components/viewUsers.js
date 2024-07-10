@@ -145,16 +145,32 @@ const ViewUsers = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('http://localhost:3000/users')
-      .then(response => response.json())
-      .then(data => setUsers(data))
-      .catch(error => console.error('Error fetching users:', error));
+    const fetchUsers = async () => {
+      const token = localStorage.getItem('token');
+      try {
+        const response = await fetch('http://localhost:3000/users', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        const data = await response.json();
+        setUsers(data);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+
+    fetchUsers();
   }, []);
 
-  const handleDelete = async id => {
+  const handleDelete = async (id) => {
+    const token = localStorage.getItem('token');
     try {
       const response = await fetch(`http://localhost:3000/users/${id}`, {
         method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       });
       if (response.ok) {
         setUsers(users.filter(user => user._id !== id));

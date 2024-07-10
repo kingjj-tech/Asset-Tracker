@@ -188,7 +188,7 @@ const Register = () => {
               active={userType === 'superuser'} 
               onClick={() => setUserType('superuser')}
             >
-              Super User
+              Superuser
             </UserTypeButton>
           </UserTypeSelector>
           <InputGroup>

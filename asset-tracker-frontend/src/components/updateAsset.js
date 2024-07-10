@@ -79,6 +79,7 @@ const UpdateAsset = () => {
             <option value="in use">In Use</option>
             <option value="in storage">In Storage</option>
             <option value="disposed">Disposed</option>
+            <option value="disposed">Expired</option>
           </select>
         </label>
         <label>

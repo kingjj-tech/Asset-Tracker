@@ -80,17 +80,49 @@ const ActionLink = styled(Link)`
   }
 `;
 
+const BackButton = styled.button`
+  background-color: #34495e;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  &:hover {
+    background-color: #2c3e50;
+  }
+`;
+
+const ButtonIcon = styled.span`
+  margin-right: 0.5rem;
+`;
+
 const ViewAssets = () => {
   const [assets, setAssets] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('http://localhost:3000/assets')
-      .then(response => response.json())
-      .then(data => setAssets(data))
-      .catch(error => console.error('Error fetching assets:', error));
-    
+    const fetchAssets = async () => {
+      const token = localStorage.getItem('token');
+      try {
+        const response = await fetch('http://localhost:3000/assets', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        const data = await response.json();
+        setAssets(data);
+      } catch (error) {
+        console.error('Error fetching assets:', error);
+      }
+    };
+
+    fetchAssets();
+
     const socket = io('http://localhost:3000');
 
     socket.on('assetRegistered', (newAsset) => {
@@ -108,10 +140,14 @@ const ViewAssets = () => {
     return () => socket.disconnect();
   }, []);
 
-  const handleDelete = async id => {
+  const handleDelete = async (id) => {
+    const token = localStorage.getItem('token');
     try {
       const response = await fetch(`http://localhost:3000/assets/${id}`, {
         method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       });
       if (response.ok) {
         setAssets(assets.filter(asset => asset._id !== id));
@@ -133,6 +169,10 @@ const ViewAssets = () => {
 
   return (
     <PageContainer>
+      <BackButton onClick={() => navigate(-1)}>
+        <ButtonIcon>⬅️</ButtonIcon>
+        Back
+      </BackButton>
       <Title>Assets</Title>
       <CreateButton onClick={() => navigate('/create-asset')}>Create Asset</CreateButton>
       <SearchContainer>

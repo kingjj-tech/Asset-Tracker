@@ -11,6 +11,8 @@ import ViewAssets from './components/viewAsset';
 import ViewAssetHistory from './components/viewAssetHistory';
 import CreateUser from './components/createUser';
 import ViewUsers from './components/viewUsers';
+import Profile from './components/profile';
+import GenerateReport from './components/generateReport';
 
 
 import UpdateUser from './components/updateUser';
@@ -31,7 +33,8 @@ function App() {
         <Route path="/create-user" element={<CreateUser />} />
         <Route path="/view-users" element={<ViewUsers />} />
         <Route path="/update-user/:id" element={<UpdateUser />} />
-        
+        <Route path="/generate-report" element={<GenerateReport />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </Router>
   );
