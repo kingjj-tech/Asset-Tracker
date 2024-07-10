@@ -168,7 +168,7 @@ const Register = () => {
       <NavBar>
         <NavTitle>Inventory System</NavTitle>
         <NavLinks>
-          <NavLink to="/login">Login</NavLink>
+          <NavLink to="/">Login</NavLink>
           <NavLink to="/register">Register</NavLink>
         </NavLinks>
       </NavBar>
