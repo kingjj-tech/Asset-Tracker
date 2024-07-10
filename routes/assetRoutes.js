@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const Asset = require('../models/Asset');
+const Asset = require('../models/asset');
 const authMiddleware = require('../middleware/authMiddleware'); // Import the auth middleware
 
 // Apply authMiddleware to all asset routes
 router.use(authMiddleware);
+
 // Create a new asset
 router.post('/', async (req, res) => {
   const { type, make, model, purchaseDate, warrantyEndDate, status, location } = req.body;
@@ -23,6 +24,7 @@ router.post('/', async (req, res) => {
       warrantyEndDate,
       status,
       location,
+      assigned_to: req.user.name, // Assigning the authenticated user's name
       asset_id: new mongoose.Types.ObjectId().toString()
     });
 

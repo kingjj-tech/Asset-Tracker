@@ -2,6 +2,10 @@ const Asset = require('./models/asset');
 
 exports.registerAsset = async (req, res) => {
   try {
+    const assigned_to = req.user ? req.user.username : 'N/A'; // Default to 'N/A' if user is not authenticated
+    
+    // Include the assigned_to field in the asset data
+    const assetData = { ...req.body, assigned_to };
     const newAsset = new Asset(req.body);
     await newAsset.save();
     // Emit real-time update

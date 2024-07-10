@@ -13,6 +13,7 @@ const CreateAsset = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
+    const username = localStorage.getItem('username');
     if (!token) {
       alert('No token found, please log in first');
       return;
@@ -32,6 +33,7 @@ const CreateAsset = () => {
           warrantyEndDate,
           status,
           location,
+          assigned_to: username,
         }),
       });
 

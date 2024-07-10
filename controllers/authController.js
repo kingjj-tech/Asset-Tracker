@@ -26,7 +26,9 @@ const register = async (req, res) => {
     await newUser.save();
 
     // Generate a token
-    const token = await newUser.generateAuthToken();
+    const token = jwt.sign({ id: newUser._id, name: newUser.name, role: newUser.role }, JWT_SECRET, {
+      expiresIn: '1h'
+    });
 
     res.status(201).send({ newUser, token });
   } catch (error) {
@@ -55,7 +57,9 @@ const login = async (req, res) => {
     }
 
     // Generate a token
-    const token = await user.generateAuthToken();
+    const token = jwt.sign({ id: user._id, name: user.name, role: user.role }, JWT_SECRET, {
+      expiresIn: '1h'
+    });
 
     res.send({ user, token });
   } catch (error) {

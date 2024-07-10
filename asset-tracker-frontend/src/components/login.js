@@ -125,6 +125,7 @@ const Login = () => {
       if (response.ok) {
         localStorage.setItem('token', data.token);
         localStorage.setItem('role', data.user.role);
+        localStorage.setItem('username', data.user.name); // Store the username
 
         if (data.user.role === 'superuser') {
           navigate('/superuser-dashboard');
