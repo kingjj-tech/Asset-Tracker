@@ -23,6 +23,10 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 db.once('open', () => {
   console.log('Connected to MongoDB');
 
+  const crypto = require('crypto');
+const secretKey = crypto.randomBytes(64).toString('hex');
+console.log(secretKey);
+
   app.use(cors({ origin: 'http://localhost:5000' })); // Set CORS to allow requests from frontend
   app.use(express.json());
 

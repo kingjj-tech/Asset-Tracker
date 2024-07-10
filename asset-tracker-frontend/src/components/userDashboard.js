@@ -44,7 +44,7 @@ const UserDashboard = () => {
         <ul>
           <li><a href="#dashboard" className="active">Dashboard</a></li>
           <li><a href="#" onClick={() => handleNavigation('/reports')}>Reports</a></li>
-          <li><a href="#" onClick={() => handleNavigation('/settings')}></a></li>
+          <li><a href="#" onClick={() => handleNavigation('/settings')}>...</a></li>
         </ul>
       </nav>
       <main className="dashboard-content">

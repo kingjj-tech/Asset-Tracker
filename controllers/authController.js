@@ -1,9 +1,10 @@
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+require('dotenv').config(); // Load environment variables
 
 // Secret key for JWT
-const JWT_SECRET = 'your_jwt_secret';
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // Function to register a new user
 const register = async (req, res) => {
@@ -25,7 +26,7 @@ const register = async (req, res) => {
     await newUser.save();
 
     // Generate a token
-    const token = jwt.sign({ userId: newUser._id, role: newUser.role }, JWT_SECRET, { expiresIn: '1h' });
+    const token = await newUser.generateAuthToken();
 
     res.status(201).send({ newUser, token });
   } catch (error) {
@@ -47,13 +48,14 @@ const login = async (req, res) => {
       return res.status(404).send({ message: 'User not found' });
     }
 
-    const isPasswordMatch = await bcrypt.compare(password, user.password);
+    const isPasswordMatch = await user.comparePassword(password);
+
     if (!isPasswordMatch) {
       return res.status(400).send({ message: 'Invalid credentials' });
     }
 
     // Generate a token
-    const token = jwt.sign({ userId: user._id, role: user.role }, JWT_SECRET, { expiresIn: '1h' });
+    const token = await user.generateAuthToken();
 
     res.send({ user, token });
   } catch (error) {

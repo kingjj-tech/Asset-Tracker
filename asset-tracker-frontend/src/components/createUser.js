@@ -85,12 +85,18 @@ const CreateUser = () => {
     e.preventDefault();
     setError('');
     const userData = { name, email, department, role, password };
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setError('No token found, please log in first');
+      return;
+    }
 
     try {
       const response = await fetch('http://localhost:3000/users', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify(userData),
       });

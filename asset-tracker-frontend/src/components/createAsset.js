@@ -18,7 +18,7 @@ const CreateAsset = () => {
       return;
     }
     try {
-      const response = await fetch('http://localhost:3000/assets', { // Updated URL
+      const response = await fetch('http://localhost:3000/assets', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -43,6 +43,7 @@ const CreateAsset = () => {
       }
     } catch (error) {
       console.error('Error:', error);
+      alert('An error occurred while creating the asset. Please try again.');
     }
   };
 
