@@ -2,6 +2,10 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const Asset = require('../models/Asset');
+const authMiddleware = require('../middleware/authMiddleware'); // Import the auth middleware
+
+// Apply authMiddleware to all asset routes
+router.use(authMiddleware);
 
 // Create a new asset
 router.post('/', async (req, res) => {
