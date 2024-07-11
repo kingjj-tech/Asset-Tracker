@@ -7,27 +7,30 @@ const PageContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #e6e0e9;
+  min-height: 100vh;
 `;
 
 const Title = styled.h2`
-  color: #2c3e50;
+  color: #4a0e4e;
   font-size: 2rem;
   margin-bottom: 1.5rem;
   text-align: center;
 `;
 
 const CreateButton = styled.button`
-  background-color: #3498db;
+  background-color: #9c27b0;
   color: white;
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 1.5rem;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
   cursor: pointer;
   font-size: 1rem;
   margin-bottom: 1rem;
+  transition: background-color 0.3s ease;
   &:hover {
-    background-color: #2980b9;
+    background-color: #7b1fa2;
   }
 `;
 
@@ -37,20 +40,29 @@ const SearchContainer = styled.div`
 
 const SearchInput = styled.input`
   width: 100%;
-  padding: 0.5rem;
+  padding: 0.75rem;
   font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  border: 1px solid #9c27b0;
+  border-radius: 4px;
+  transition: border-color 0.3s ease;
+  &:focus {
+    outline: none;
+    border-color: #4a0e4e;
+  }
 `;
 
 const Table = styled.table`
   width: 100%;
-  border-collapse: collapse;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  border-collapse: separate;
+  border-spacing: 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #f3e5f5;
+  border-radius: 8px;
+  overflow: hidden;
 `;
 
 const Th = styled.th`
-  background-color: #3498db;
+  background-color: #7b1fa2;
   color: white;
   padding: 1rem;
   text-align: left;
@@ -58,21 +70,21 @@ const Th = styled.th`
 
 const Td = styled.td`
   padding: 1rem;
-  border-bottom: 1px solid #ecf0f1;
+  border-bottom: 1px solid #d1c4e9;
 `;
 
 const Tr = styled.tr`
   &:nth-child(even) {
-    background-color: #f9f9f9;
+    background-color: #ede7f6;
   }
   &:hover {
-    background-color: #ecf0f1;
+    background-color: #d1c4e9;
   }
 `;
 
 const ActionLink = styled(Link)`
   text-decoration: none;
-  color: #3498db;
+  color: #7b1fa2;
   margin-right: 1rem;
   font-weight: bold;
   &:hover {
@@ -81,18 +93,19 @@ const ActionLink = styled(Link)`
 `;
 
 const BackButton = styled.button`
-  background-color: #34495e;
+  background-color: #4a0e4e;
   color: white;
   padding: 0.5rem 1rem;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
   cursor: pointer;
   font-size: 1rem;
   margin-bottom: 1rem;
   display: flex;
   align-items: center;
+  transition: background-color 0.3s ease;
   &:hover {
-    background-color: #2c3e50;
+    background-color: #3a0a3e;
   }
 `;
 
@@ -173,8 +186,8 @@ const ViewAssets = () => {
         <ButtonIcon>⬅️</ButtonIcon>
         Back
       </BackButton>
-      <Title>Assets</Title>
-      <CreateButton onClick={() => navigate('/create-asset')}>Create Asset</CreateButton>
+      <Title>Assets Overview</Title>
+      <CreateButton onClick={() => navigate('/create-asset')}>Create New Asset</CreateButton>
       <SearchContainer>
         <SearchInput 
           type="text" 

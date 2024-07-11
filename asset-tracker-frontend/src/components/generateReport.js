@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 const ReportContainer = styled.div`
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f0f2f5;
+  background-color: #f0e6ff;
   min-height: 100vh;
   padding: 2rem;
 `;
@@ -21,6 +21,7 @@ const ReportForm = styled.form`
 const FormTitle = styled.h2`
   margin-top: 0;
   margin-bottom: 1rem;
+  color: #4b0082;
 `;
 
 const FormGroup = styled.div`
@@ -30,34 +31,44 @@ const FormGroup = styled.div`
 const Label = styled.label`
   display: block;
   margin-bottom: 0.5rem;
+  color: #4b0082;
 `;
 
 const Select = styled.select`
   width: 100%;
   padding: 0.5rem;
-  border: 1px solid #ccc;
+  border: 1px solid #8a2be2;
   border-radius: 4px;
+  color: #4b0082;
 `;
 
 const DateInput = styled.input`
   width: 100%;
   padding: 0.5rem;
-  border: 1px solid #ccc;
+  border: 1px solid #8a2be2;
   border-radius: 4px;
+  color: #4b0082;
 `;
 
-const SubmitButton = styled.button`
-  background-color: #0078d4;
+const Button = styled.button`
+  background-color: #8a2be2;
   color: white;
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 1rem;
+  margin-right: 1rem;
 
   &:hover {
-    background-color: #005a9e;
+    background-color: #4b0082;
   }
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
 `;
 
 const GenerateReport = () => {
@@ -98,6 +109,10 @@ const GenerateReport = () => {
     }
   };
 
+  const handleBack = () => {
+    navigate(-1);
+  };
+
   return (
     <ReportContainer>
       <ReportForm onSubmit={handleSubmit}>
@@ -136,7 +151,10 @@ const GenerateReport = () => {
             required
           />
         </FormGroup>
-        <SubmitButton type="submit">Generate Report</SubmitButton>
+        <ButtonContainer>
+          <Button type="button" onClick={handleBack}>Back</Button>
+          <Button type="submit">Generate Report</Button>
+        </ButtonContainer>
       </ReportForm>
     </ReportContainer>
   );

@@ -339,7 +339,7 @@ const SuperuserDashboard = () => {
         <NavList>
           <NavItem><NavLink href="#dashboard" className="active">Dashboard</NavLink></NavItem>
           <NavItem><NavLink href="#" onClick={() => navigate('/reports')}>Reports</NavLink></NavItem>
-          <NavItem><NavLink href="#" onClick={() => navigate('/settings')}>Settings</NavLink></NavItem>
+          <NavItem><NavLink href="#" onClick={() => navigate('/user-dashboard')}>User Dashboard</NavLink></NavItem>
         </NavList>
       </Nav>
       <Content>
@@ -352,6 +352,10 @@ const SuperuserDashboard = () => {
           <ActionLink to="/view-users">
             <ActionIcon className="fas fa-users"></ActionIcon>
             <span>View Users</span>
+          </ActionLink>
+          <ActionLink to="/view-assets">
+            <ActionIcon className="fas fa-list"></ActionIcon>
+            <span>View Assets</span>
           </ActionLink>
           <ActionLink to="/generate-report">
             <ActionIcon className="fas fa-file-alt"></ActionIcon>
