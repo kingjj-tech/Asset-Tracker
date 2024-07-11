@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Asset = require('../models/Asset'); // Ensure this path is correct
+const Asset = require('../models/asset'); // Ensure this path is correct
 const User = require('../models/user'); // Ensure this path is correct
 const Activity = require('../models/activity'); // Ensure this path is correct 
 const HistoricalData = require('../models/historicalData'); // Ensure this path is correct
