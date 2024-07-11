@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const Asset = require('../models/asset');
-const AssetHistory = require('../models/assetHistory');
 const authMiddleware = require('../middleware/authMiddleware'); // Import the auth middleware
 
 // Apply authMiddleware to all asset routes
@@ -30,15 +29,6 @@ router.post('/', async (req, res) => {
     });
 
     await asset.save();
-    // Create an entry in AssetHistory
-    const assetHistory = new AssetHistory({
-      asset_id: asset.asset_id,
-      user_id: req.user._id,
-      assigned_date: new Date(),
-      status: 'assigned'
-    });
-
-    await assetHistory.save();
     res.status(201).json({ message: 'Asset created successfully', asset });
   } catch (error) {
     console.error(error);
