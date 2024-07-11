@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-
+import io from 'socket.io-client';
 
 const PageContainer = styled.div`
   max-width: 1200px;
@@ -90,7 +90,11 @@ const UpdateAsset = () => {
   });
 
   useEffect(() => {
-    fetch(`http://localhost:3000/assets/${id}`)
+    fetch(`http://localhost:3000/assets/${id}`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    })
       .then(response => response.json())
       .then(data => setForm(data))
       .catch(error => console.error('Error fetching asset:', error));
@@ -109,11 +113,17 @@ const UpdateAsset = () => {
     fetch(`http://localhost:3000/assets/${id}`, {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
       },
       body: JSON.stringify(form)
     })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
       .then(data => {
         console.log('Success:', data);
         navigate('/view-assets');
