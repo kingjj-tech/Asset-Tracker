@@ -7,7 +7,21 @@ const DashboardContainer = styled.div`
   background-color: #e6e0e9; // Light purple background
   min-height: 100vh;
 `;
+const LogoutButton = styled.button`
+  background-color: #7b1fa2;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-left: 1rem;
+  transition: background-color 0.3s ease;
 
+  &:hover {
+    background-color: #9c27b0;
+  }
+`;
 const Header = styled.header`
   background-color: #4a0e4e;
   color: white;
@@ -240,7 +254,10 @@ const SuperuserDashboard = () => {
    
     fetchUserName();
   }, []);
-
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/');
+  };
   const fetchCounts = async () => {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -334,9 +351,12 @@ const SuperuserDashboard = () => {
     <DashboardContainer>
       <Header>
         <Title>Superuser Dashboard</Title>
-        <UserInfo onClick={() => navigate('/profile')}>
-          <UserAvatar src="/avatar-placeholder.png" alt="User Avatar" />
-          <UserName>{userName}</UserName>
+        <UserInfo>
+          <div onClick={() => navigate('/profile')}>
+            <UserAvatar src="/avatar-placeholder.png" alt="User Avatar" />
+            <UserName>{userName}</UserName>
+          </div>
+          <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
         </UserInfo>
       </Header>
       <Nav>
