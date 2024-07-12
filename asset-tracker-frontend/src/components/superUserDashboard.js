@@ -225,6 +225,19 @@ const StatLabel = styled.div`
   opacity: 0.8;
 `;
 
+const LogoutButton = styled.button`
+  background-color: #f44336; // Red color for logout
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-left: 1rem;
+
+  &:hover {
+    background-color: #d32f2f;
+  }
+`;
 
 const SuperuserDashboard = () => {
   const [counts, setCounts] = useState({ userCount: 0, itemCount: 0 });
@@ -237,7 +250,6 @@ const SuperuserDashboard = () => {
   useEffect(() => {
     fetchCounts();
     fetchUsers();
-   
     fetchUserName();
   }, []);
 
@@ -259,8 +271,6 @@ const SuperuserDashboard = () => {
       console.error('Error fetching counts:', error);
     }
   };
-
-  
 
   const fetchUsers = async () => {
     const token = localStorage.getItem('token');
@@ -317,105 +327,91 @@ const SuperuserDashboard = () => {
         setUsers(users.filter(user => user._id !== id));
         fetchCounts();
       } else {
-        console.error('Error deleting user');
+        console.error('Failed to delete user');
       }
     } catch (error) {
       console.error('Error deleting user:', error);
     }
   };
 
-  const filteredUsers = users.filter(user =>
-    user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    user.role.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
+  };
 
   return (
     <DashboardContainer>
       <Header>
         <Title>Superuser Dashboard</Title>
-        <UserInfo onClick={() => navigate('/profile')}>
-          <UserAvatar src="/avatar-placeholder.png" alt="User Avatar" />
+        <UserInfo onClick={fetchUserName}>
+          <UserAvatar src="path-to-avatar-image" alt="User Avatar" />
           <UserName>{userName}</UserName>
         </UserInfo>
+        <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
       </Header>
       <Nav>
         <NavList>
-          <NavItem><NavLink  className="active">Dashboard</NavLink></NavItem>
-          <NavItem><NavLink  onClick={() => navigate('/reports')}>Reports</NavLink></NavItem>
-          <NavItem><NavLink onClick={() => navigate('/user-dashboard')}>User</NavLink></NavItem>
+          <NavItem>
+            <NavLink href="#" className="active">Dashboard</NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink href="#">Manage Assets</NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink href="#">User Settings</NavLink>
+          </NavItem>
         </NavList>
       </Nav>
       <Content>
-        <h2>Quick Actions</h2>
+        <StatsBox>
+          <StatItem>
+            <StatNumber>{counts.userCount}</StatNumber>
+            <StatLabel>Total Users</StatLabel>
+          </StatItem>
+          <StatItem>
+            <StatNumber>{counts.itemCount}</StatNumber>
+            <StatLabel>Total Items</StatLabel>
+          </StatItem>
+        </StatsBox>
         <QuickActions>
           <ActionLink to="/create-user">
             <ActionIcon className="fas fa-user-plus"></ActionIcon>
-            <span>Create User</span>
+            Add User
           </ActionLink>
-          <ActionLink to="/view-users">
-            <ActionIcon className="fas fa-users"></ActionIcon>
-            <span>View Users</span>
+          <ActionLink to="/create-asset">
+            <ActionIcon className="fas fa-laptop"></ActionIcon>
+            Add Asset
           </ActionLink>
-          <ActionLink to="/view-assets">
-            <ActionIcon className="fas fa-list"></ActionIcon>
-            <span>View Assets</span>
-          </ActionLink>
-          <ActionLink to="/generate-report">
-            <ActionIcon className="fas fa-file-alt"></ActionIcon>
-            <span>Generate Report</span>
-          </ActionLink>
-          <ActionLink to="/reports">
-    <ActionIcon className="fas fa-list-alt" />
-    View Reports {/* Add link to view reports */}
-  </ActionLink>
         </QuickActions>
         <Widgets>
-          <Widget>
-            <WidgetTitle>User Overview</WidgetTitle>
-            <StatsBox>
-              <StatItem>
-                <StatNumber>{counts.userCount}</StatNumber>
-                <StatLabel>Total Users</StatLabel>
-              </StatItem>
-              <StatItem>
-                <StatNumber>{counts.itemCount}</StatNumber>
-                <StatLabel>Total Items</StatLabel>
-              </StatItem>
-            </StatsBox>
-          </Widget>
           <UserManagementWidget>
             <WidgetTitle>User Management</WidgetTitle>
             <SearchContainer>
-              <SearchIcon className="fas fa-search" />
+              <SearchIcon className="fas fa-search"></SearchIcon>
               <SearchInput
                 type="text"
-                placeholder="Search users by name, email, or role..."
+                placeholder="Search users"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </SearchContainer>
             <UserTable>
               <thead>
-                <tr>
+                <UserTr>
                   <UserTh>Name</UserTh>
                   <UserTh>Email</UserTh>
-                  <UserTh>Role</UserTh>
                   <UserTh>Actions</UserTh>
-                </tr>
+                </UserTr>
               </thead>
               <tbody>
-                {filteredUsers.map(user => (
+                {users.filter(user => user.name.includes(searchQuery)).map(user => (
                   <UserTr key={user._id}>
                     <UserTd>{user.name}</UserTd>
                     <UserTd>{user.email}</UserTd>
-                    <UserTd>{user.role}</UserTd>
                     <UserTd>
-                      <ActionButton as={Link} to={`/update-user/${user._id}`}>
-                        <ButtonIcon>✏️</ButtonIcon> Edit
-                      </ActionButton>
                       <ActionButton onClick={() => handleDelete(user._id)} delete>
-                        <ButtonIcon>🗑️</ButtonIcon> Delete
+                        <ButtonIcon className="fas fa-trash"></ButtonIcon>
+                        Delete
                       </ActionButton>
                     </UserTd>
                   </UserTr>

@@ -1,3 +1,4 @@
+// userDashboard.js
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -134,6 +135,19 @@ const ActivityItem = styled.li`
   }
 `;
 
+const LogoutButton = styled.button`
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-left: 1rem;
+  &:hover {
+    background-color: #d32f2f;
+  }
+`;
+
 const UserDashboard = () => {
   const [totalAssets, setTotalAssets] = useState(0);
   const [assetsInUse, setAssetsInUse] = useState(0);
@@ -189,14 +203,22 @@ const UserDashboard = () => {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    localStorage.removeItem('username');
+    navigate('/login');
+  };
+
   return (
     <DashboardContainer>
       <Header>
-        <Title>Inventory Management System</Title>
+        <Title>User Dashboard</Title>
         <UserInfo onClick={() => navigate('/profile')}>
           <UserAvatar src="/avatar-placeholder.png" alt="User Avatar" />
           <UserName>{userName}</UserName>
         </UserInfo>
+        <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
       </Header>
       <Nav>
         <NavList>
