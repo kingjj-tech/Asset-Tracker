@@ -381,10 +381,6 @@ const SuperuserDashboard = () => {
             <ActionIcon className="fas fa-list"></ActionIcon>
             <span>View Assets</span>
           </ActionLink>
-          <ActionLink to="/generate-report">
-            <ActionIcon className="fas fa-file-alt"></ActionIcon>
-            <span>Generate Report</span>
-          </ActionLink>
           <ActionLink to="/reports">
     <ActionIcon className="fas fa-list-alt" />
     View Reports {/* Add link to view reports */}
