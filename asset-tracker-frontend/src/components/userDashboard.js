@@ -236,10 +236,6 @@ const UserDashboard = () => {
             <ActionIcon className="fas fa-list"></ActionIcon>
             <span>View Assets</span>
           </ActionLink>
-          <ActionLink to="/view-asset-history">
-            <ActionIcon className="fas fa-history"></ActionIcon>
-            <span>View Asset History</span>
-          </ActionLink>
           <ActionLink to="/generate-report">
             <ActionIcon className="fas fa-file-alt"></ActionIcon>
             <span>Generate Report</span>
