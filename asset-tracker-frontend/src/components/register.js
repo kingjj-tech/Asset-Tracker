@@ -4,12 +4,12 @@ import styled from 'styled-components';
 
 const PageContainer = styled.div`
   min-height: 100vh;
-  font-family: Arial, sans-serif;
-  background-color: #f0f8ff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #e6e0e9;
 `;
 
 const NavBar = styled.nav`
-  background-color: #3498db;
+  background-color: #4a0e4e;
   color: white;
   padding: 1rem 2rem;
   display: flex;
@@ -35,7 +35,7 @@ const NavLink = styled(Link)`
   transition: background-color 0.3s;
 
   &:hover {
-    background-color: #2980b9;
+    background-color: #7b1fa2;
   }
 `;
 
@@ -47,20 +47,20 @@ const RegisterContainer = styled.div`
 `;
 
 const RegisterForm = styled.form`
-  background: white;
+  background: #f3e5f5;
   padding: 2rem;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #9c27b0;
 `;
 
 const Title = styled.h2`
-  color: #2c3e50;
+  color: #4a0e4e;
   text-align: center;
   margin-bottom: 2rem;
-  border-bottom: 2px solid #3498db;
+  border-bottom: 2px solid #9c27b0;
   padding-bottom: 0.5rem;
 `;
 
@@ -71,21 +71,28 @@ const InputGroup = styled.div`
 const Label = styled.label`
   display: block;
   margin-bottom: 0.5rem;
-  color: #34495e;
+  color: #4a0e4e;
 `;
 
 const Input = styled.input`
   width: 100%;
   padding: 0.5rem;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #9c27b0;
   border-radius: 4px;
   font-size: 1rem;
+  background-color: white;
+
+  &:focus {
+    outline: none;
+    border-color: #4a0e4e;
+    box-shadow: 0 0 0 2px rgba(74, 14, 78, 0.2);
+  }
 `;
 
 const Button = styled.button`
   width: 100%;
   padding: 0.75rem;
-  background-color: #3498db;
+  background-color: #9c27b0;
   color: white;
   border: none;
   border-radius: 4px;
@@ -94,7 +101,7 @@ const Button = styled.button`
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #2980b9;
+    background-color: #7b1fa2;
   }
 `;
 
@@ -142,39 +149,43 @@ const Register = () => {
         <RegisterForm onSubmit={handleRegister}>
           <Title>Register</Title>
           <InputGroup>
-            <Label htmlFor="name">Name:</Label>
+            <Label htmlFor="name">Name</Label>
             <Input
               type="text"
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              required
             />
           </InputGroup>
           <InputGroup>
-            <Label htmlFor="email">Email:</Label>
+            <Label htmlFor="email">Email</Label>
             <Input
               type="email"
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </InputGroup>
           <InputGroup>
-            <Label htmlFor="password">Password:</Label>
+            <Label htmlFor="password">Password</Label>
             <Input
               type="password"
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
           </InputGroup>
           <InputGroup>
-            <Label htmlFor="department">Department:</Label>
+            <Label htmlFor="department">Department</Label>
             <Input
               type="text"
               id="department"
               value={department}
               onChange={(e) => setDepartment(e.target.value)}
+              required
             />
           </InputGroup>
           <Button type="submit">Register</Button>
