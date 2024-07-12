@@ -207,7 +207,7 @@ const UserDashboard = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
     localStorage.removeItem('username');
-    navigate('/login');
+    navigate('/');
   };
 
   return (
