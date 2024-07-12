@@ -25,7 +25,8 @@ router.post('/', async (req, res) => {
       status,
       location,
       assigned_to: req.user.name, // Assigning the authenticated user's name
-      asset_id: new mongoose.Types.ObjectId().toString()
+      asset_id: new mongoose.Types.ObjectId().toString(),
+      assigned_date: new Date() // Add this line
     });
 
     await asset.save();

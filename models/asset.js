@@ -10,6 +10,7 @@ const assetSchema = new mongoose.Schema({
   location: { type: String, required: true },
   assigned_to: { type: String, default: null }, // If applicable
   asset_id: { type: String, required: true },
+  assigned_date: { type: Date, default: Date.now } // Add this line
 });
 
 module.exports = mongoose.models.Asset || mongoose.model('Asset', assetSchema);

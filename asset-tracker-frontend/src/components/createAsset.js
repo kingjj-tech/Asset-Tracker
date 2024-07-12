@@ -149,6 +149,7 @@ const CreateAsset = () => {
   const [location, setLocation] = useState('');
   const [serialNumber, setSerialNumber] = useState('');
   const [errors, setErrors] = useState({});
+  const [assigned_date, setAssigned_date] = useState(null);
   const navigate = useNavigate();
 
   const assetTypes = [
@@ -179,6 +180,9 @@ const CreateAsset = () => {
 
     const token = localStorage.getItem('token');
     const username = localStorage.getItem('username');
+    const currentDate = new Date().toLocaleString();
+    // Update this line from setCreationDate to setAssigned_date
+  setAssigned_date(currentDate);
     if (!token) {
       alert('No token found, please log in first');
       return;
@@ -200,6 +204,7 @@ const CreateAsset = () => {
           location,
           serialNumber,
           assigned_to: username,
+          assigned_date: currentDate, 
         }),
       });
 
