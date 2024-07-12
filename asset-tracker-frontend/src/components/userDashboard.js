@@ -200,9 +200,8 @@ const UserDashboard = () => {
       </Header>
       <Nav>
         <NavList>
-          <NavItem><NavLink href="#dashboard" className="active">Dashboard</NavLink></NavItem>
-          <NavItem><NavLink href="#" onClick={() => navigate('/reports')}>Reports</NavLink></NavItem>
-          <NavItem><NavLink href="#" onClick={() => navigate('/profile')}>Profile</NavLink></NavItem>
+          <NavItem><NavLink className="active">Dashboard</NavLink></NavItem>
+          <NavItem><NavLink onClick={() => navigate('/reports')}>Reports</NavLink></NavItem>
         </NavList>
       </Nav>
       <Content>
@@ -212,7 +211,7 @@ const UserDashboard = () => {
             <ActionIcon className="fas fa-plus-circle"></ActionIcon>
             <span>Create Asset</span>
           </ActionLink>
-          <ActionLink to="/view-assets">
+          <ActionLink to="/view-assets-dashboard">
             <ActionIcon className="fas fa-list"></ActionIcon>
             <span>View Assets</span>
           </ActionLink>

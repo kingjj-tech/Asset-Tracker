@@ -8,11 +8,13 @@ import CreateAsset from './components/createAsset';
 import UpdateAsset from './components/updateAsset';
 import DeleteAsset from './components/deleteAsset';
 import ViewAssets from './components/viewAsset';
+import ViewAssetsDashboard from './components/ViewAssetsDashboard';
 import ViewAssetHistory from './components/viewAssetHistory';
 import CreateUser from './components/createUser';
 import ViewUsers from './components/viewUsers';
+import ViewReport from './components/report'
 import Profile from './components/profile';
-import GenerateReport from './components/generateReport';
+
 
 
 import UpdateUser from './components/updateUser';
@@ -29,11 +31,13 @@ function App() {
         <Route path="/update-asset/:id" element={<UpdateAsset />} />
         <Route path="/delete-asset/:id" element={<DeleteAsset />} />
         <Route path="/view-assets" element={<ViewAssets />} />
+        <Route path="/view-assets-dashboard" element={<ViewAssetsDashboard />} />
         <Route path="/view-asset-history" element={<ViewAssetHistory />} />
         <Route path="/create-user" element={<CreateUser />} />
+        <Route path="/reports" element={<ViewReport />} />
         <Route path="/view-users" element={<ViewUsers />} />
         <Route path="/update-user/:id" element={<UpdateUser />} />
-        <Route path="/generate-report" element={<GenerateReport />} />
+       
         <Route path="/profile" element={<Profile />} />
       </Routes>
     </Router>

@@ -1,20 +1,26 @@
-const AssetHistory = require('./models/assetHistory');
+const History = require('../models/history');
 
-exports.registerAssetHistory = async (req, res) => {
+const createHistory = async (req, res) => {
   try {
-    const newAssetHistory = new AssetHistory(req.body);
-    await newAssetHistory.save();
-    res.status(201).send(newAssetHistory);
+    const { action, user, details } = req.body;
+    const history = new History({ action, user, details });
+    await history.save();
+    res.status(201).json(history);
   } catch (error) {
-    res.status(400).send(error);
+    res.status(500).json({ error: error.message });
   }
 };
 
-exports.getAllAssetHistories = async (req, res) => {
+const getHistory = async (req, res) => {
   try {
-    const assetHistories = await AssetHistory.find();
-    res.status(200).send(assetHistories);
+    const history = await History.find().populate('user', 'name email');
+    res.status(200).json(history);
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).json({ error: error.message });
   }
+};
+
+module.exports = {
+  createHistory,
+  getHistory
 };

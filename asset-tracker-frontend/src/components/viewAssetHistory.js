@@ -2,94 +2,106 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 const PageContainer = styled.div`
-  min-height: 100vh;
-  font-family: Arial, sans-serif;
-  background-color: #f0f8ff;
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 2rem;
+  font-family: 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  background-color: #f8f9fa;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+`;
+
+const HeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e9ecef;
 `;
 
 const Title = styled.h2`
-  color: #2c3e50;
-  margin-bottom: 1rem;
-  border-bottom: 2px solid #3498db;
-  padding-bottom: 0.5rem;
+  color: #343a40;
+  font-size: 2rem;
+  font-weight: 600;
 `;
 
 const Table = styled.table`
   width: 100%;
-  border-collapse: collapse;
-  background-color: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-collapse: separate;
+  border-spacing: 0;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
   border-radius: 8px;
   overflow: hidden;
 `;
 
-const TableHead = styled.thead`
-  background-color: #3498db;
-  color: white;
+const Th = styled.th`
+  background-color: #f8f9fa;
+  color: #495057;
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid #dee2e6;
 `;
 
-const TableRow = styled.tr`
-  &:nth-child(even) {
-    background-color: #f8f9fa;
+const Td = styled.td`
+  padding: 1rem;
+  border-bottom: 1px solid #dee2e6;
+  color: #212529;
+`;
+
+const Tr = styled.tr`
+  background-color: #ffffff;
+  transition: background-color 0.2s ease;
+  &:hover {
+    background-color: #f1f3f5;
   }
 `;
 
-const TableHeader = styled.th`
-  padding: 1rem;
-  text-align: left;
-`;
-
-const TableCell = styled.td`
-  padding: 1rem;
-  border-top: 1px solid #e0e0e0;
-`;
-
-const ViewAssetHistory = () => {
-  const [assetHistories, setAssetHistories] = useState([]);
+const ViewHistory = () => {
+  const [history, setHistory] = useState([]);
 
   useEffect(() => {
-    console.log('Fetching asset history');
-    fetch('/assetHistory', {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
+    const fetchHistory = async () => {
+      const token = localStorage.getItem('token');
+      try {
+        const response = await fetch('http://localhost:3000/api/history', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        const data = await response.json();
+        setHistory(data);
+      } catch (error) {
+        console.error('Error fetching history:', error);
       }
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log('Asset history data:', data);
-        setAssetHistories(data);
-      })
-      .catch(error => console.error('Error fetching asset histories:', error));
+    };
+
+    fetchHistory();
   }, []);
 
   return (
     <PageContainer>
-      <Title>Asset History</Title>
+      <HeaderContainer>
+        <Title>History</Title>
+      </HeaderContainer>
       <Table>
-        <TableHead>
-          <TableRow>
-            <TableHeader>Asset ID</TableHeader>
-            <TableHeader>User ID</TableHeader>
-            <TableHeader>Assigned Date</TableHeader>
-            <TableHeader>Returned Date</TableHeader>
-            <TableHeader>Status</TableHeader>
-          </TableRow>
-        </TableHead>
+        <thead>
+          <Tr>
+            <Th>Action</Th>
+            <Th>User</Th>
+            <Th>Timestamp</Th>
+            <Th>Details</Th>
+          </Tr>
+        </thead>
         <tbody>
-          {assetHistories.map(history => (
-            <TableRow key={history.history_id}>
-              <TableCell>{history.asset_id}</TableCell>
-              <TableCell>{history.user_id}</TableCell>
-              <TableCell>{new Date(history.assigned_date).toLocaleDateString()}</TableCell>
-              <TableCell>{history.returned_date ? new Date(history.returned_date).toLocaleDateString() : 'N/A'}</TableCell>
-              <TableCell>{history.status}</TableCell>
-            </TableRow>
+          {history.map(entry => (
+            <Tr key={entry._id}>
+              <Td>{entry.action}</Td>
+              <Td>{entry.user.name}</Td>
+              <Td>{new Date(entry.timestamp).toLocaleString()}</Td>
+              <Td>{entry.details}</Td>
+            </Tr>
           ))}
         </tbody>
       </Table>
@@ -97,4 +109,4 @@ const ViewAssetHistory = () => {
   );
 };
 
-export default ViewAssetHistory;
+export default ViewHistory;

@@ -232,10 +232,12 @@ const SuperuserDashboard = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [userName, setUserName] = useState('');
   const navigate = useNavigate();
+  const [reports, setReports] = useState([]);
 
   useEffect(() => {
     fetchCounts();
     fetchUsers();
+   
     fetchUserName();
   }, []);
 
@@ -257,6 +259,8 @@ const SuperuserDashboard = () => {
       console.error('Error fetching counts:', error);
     }
   };
+
+  
 
   const fetchUsers = async () => {
     const token = localStorage.getItem('token');
@@ -337,9 +341,9 @@ const SuperuserDashboard = () => {
       </Header>
       <Nav>
         <NavList>
-          <NavItem><NavLink href="#dashboard" className="active">Dashboard</NavLink></NavItem>
-          <NavItem><NavLink href="#" onClick={() => navigate('/reports')}>Reports</NavLink></NavItem>
-          <NavItem><NavLink href="#" onClick={() => navigate('/user-dashboard')}>User Dashboard</NavLink></NavItem>
+          <NavItem><NavLink  className="active">Dashboard</NavLink></NavItem>
+          <NavItem><NavLink  onClick={() => navigate('/reports')}>Reports</NavLink></NavItem>
+          <NavItem><NavLink onClick={() => navigate('/user-dashboard')}>User</NavLink></NavItem>
         </NavList>
       </Nav>
       <Content>
@@ -361,6 +365,10 @@ const SuperuserDashboard = () => {
             <ActionIcon className="fas fa-file-alt"></ActionIcon>
             <span>Generate Report</span>
           </ActionLink>
+          <ActionLink to="/reports">
+    <ActionIcon className="fas fa-list-alt" />
+    View Reports {/* Add link to view reports */}
+  </ActionLink>
         </QuickActions>
         <Widgets>
           <Widget>

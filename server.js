@@ -8,10 +8,16 @@ const userRoutes = require('./routes/userRoutes');
 const assetRoutes = require('./routes/assetRoutes');
 const assetHistoryRoutes = require('./routes/assetHistoryRoutes');
 const statsRoute = require('./routes/statsRoutes');
+const reportRoute = require('./routes/reportRoutes'); 
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server);
+const io = socketIo(server, {
+  cors: {
+    origin: "http://localhost:5000",
+    methods: ["GET", "POST"]
+  }
+});
 
 const port = 3000;
 
@@ -24,10 +30,15 @@ db.once('open', () => {
   console.log('Connected to MongoDB');
 
   const crypto = require('crypto');
-const secretKey = crypto.randomBytes(64).toString('hex');
-console.log(secretKey);
+  const secretKey = crypto.randomBytes(64).toString('hex');
+  console.log(secretKey);
 
-  app.use(cors({ origin: 'http://localhost:5000' })); // Set CORS to allow requests from frontend
+  // Use cors middleware
+  app.use(cors({ 
+    origin: 'http://localhost:5000',
+    credentials: true
+  }));
+  
   app.use(express.json());
 
   // Register routes
@@ -35,7 +46,8 @@ console.log(secretKey);
   app.use('/users', userRoutes);
   app.use('/assets', assetRoutes);
   app.use('/assetHistory', assetHistoryRoutes);
-  app.use('/stats', statsRoute); // Use the new route
+  app.use('/stats', statsRoute);
+  app.use('/reports', reportRoute);
 
   // Test CORS route
   app.get('/test-cors', (req, res) => {
