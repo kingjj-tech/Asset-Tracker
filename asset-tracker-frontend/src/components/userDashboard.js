@@ -234,11 +234,7 @@ const UserDashboard = () => {
           </ActionLink>
           <ActionLink to="/view-assets-dashboard">
             <ActionIcon className="fas fa-list"></ActionIcon>
-            <span>View Assets</span>
-          </ActionLink>
-          <ActionLink to="/generate-report">
-            <ActionIcon className="fas fa-file-alt"></ActionIcon>
-            <span>Generate Report</span>
+            <span>View Assets and History</span>
           </ActionLink>
         </QuickActions>
         <Widgets>
